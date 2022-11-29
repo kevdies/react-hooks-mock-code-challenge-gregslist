@@ -1,10 +1,19 @@
 import React, {useState} from "react";
 
-function ListingCard({ image, description, location}) {
+function ListingCard({ listing, handleDeleteListing }) {
   const [fave, setFave] = useState(false);
+  const { id, image, description, location } = listing;
 
   function handleFaveStar() {
     setFave(!fave);
+  }
+
+  function handleDelete() {
+    fetch("http://localhost:6001/${id}", {
+      method: "DELETE",
+    })
+      .then(res => res.json())
+      .then(() => handleDeleteListing(id))
   }
 
   return (
@@ -21,7 +30,7 @@ function ListingCard({ image, description, location}) {
         )}
         <strong>{description}</strong>
         <span> · {location}</span>
-        <button className="emoji-button delete">🗑</button>
+        <button onClick={handleDelete} className="emoji-button delete">🗑</button>
       </div>
     </li>
   );
